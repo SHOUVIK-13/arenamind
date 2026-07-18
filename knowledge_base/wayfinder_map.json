@@ -1,0 +1,169 @@
+{
+  "stadiums": {
+    "metlife": {
+      "name": "MetLife Stadium",
+      "full_name": "MetLife Stadium (NY/NJ)",
+      "address": "One MetLife Stadium Drive, East Rutherford, NJ 07073, USA",
+      "capacity": 82500,
+      "type": "Open-air",
+      "event": "FIFA World Cup 2026",
+      "directions": {
+        "by_train": "Take Meadowlands Rail Line B from Secaucus Junction or Hoboken Terminal. Trains run every 10 min on match days, starting 4 hours before kickoff. Alight at MetLife Stadium Light Rail Terminal (far left of venue).",
+        "by_bus": "NJ Transit Bus Route 160 from Port Authority Bus Terminal (Manhattan) directly to MetLife Stadium on match days.",
+        "by_car_from_manhattan": "Lincoln Tunnel → NJ Route 3 West → Meadowlands Sports Complex exit. Follow signs. ~30 min drive.",
+        "by_car_from_newark_airport": "NJ Turnpike North → Exit 16W → Route 3 East → Meadowlands exit. ~20 min drive.",
+        "by_rideshare": "Uber/Lyft drop-off zone in Lot K (northeast corner). Follow blue rideshare signs."
+      },
+      "gates": {
+        "Gate A": { "location": "North Concourse", "status": "Accessible", "wait_time_min": 2, "features": "Step-free entry, ADA accessible, VIP entrance, wheelchair ramps, automatic doors" },
+        "Gate B": { "location": "East Concourse", "status": "Moderate", "wait_time_min": 8, "features": "Escalator access, standard entry" },
+        "Gate C": { "location": "South Concourse", "status": "Heavy Congestion", "wait_time_min": 22, "features": "Ticket booth area, frequently congested — fans should use Gate A or D instead" },
+        "Gate D": { "location": "West Concourse", "status": "Clear", "wait_time_min": 3, "features": "Stairs access, VIP entrance, fast entry, designated smoking area outside" }
+      },
+      "parking": {
+        "general": "Lots A, B, D, E, G, J, K, L, P — $40 per vehicle (pre-purchase on Ticketmaster)",
+        "accessible_ada": "Lots E and G (closest to Gate A). Free for valid ADA permit holders.",
+        "ev_charging": "Lot C — 12 Tesla Superchargers, 8 universal Level 2 chargers. First-come, first-served.",
+        "rideshare_pickup": "Lot K (northeast corner)",
+        "tailgating": "Lots E, G, J, K, L. Charcoal and propane grills allowed."
+      },
+      "sustainability": {
+        "transit_option": "Meadowlands Rail Line B",
+        "station_location": "Far Left Terminal",
+        "ev_parking": "Lot C",
+        "green_fan_pass": "Unlocked by logging transit distances below 40 miles or using train transit"
+      },
+      "food_courts": {
+        "level_1": "Sections 101-140, main food court between Sections 115-120",
+        "level_2": "Sections 201-240",
+        "options": "American, Mexican, Asian, Halal, Kosher, Vegan/Vegetarian",
+        "premium_dining": "MetLife Club Restaurant (Sections 207-211, premium tickets only)",
+        "water_refill": "Free stations at Sections 105, 118, 130, 209, 225"
+      },
+      "key_locations": {
+        "guest_services": "Section 116, Concourse Level 1",
+        "lost_and_found": "Section 116, Concourse Level 1",
+        "first_aid": ["Section 109 (Level 1)", "Section 215 (Level 2)"],
+        "family_restrooms": ["Section 109", "Section 125", "Section 205", "Section 220"],
+        "fan_shops": ["Gate A Plaza (outdoor)", "Section 110 (Level 1)", "Section 210 (Level 2)"],
+        "nursing_room": "Section 125 (Level 1)",
+        "volunteer_center": "Lot P (northwest corner)"
+      },
+      "wifi": {
+        "network": "MetLife_FIFA2026",
+        "password": "None required",
+        "speed": "50 Mbps per device"
+      }
+    },
+    "azteca": {
+      "name": "Estadio Azteca",
+      "full_name": "Estadio Azteca (Mexico City)",
+      "address": "Calzada de Tlalpan 3465, Coyoacán, 04650 Mexico City, Mexico",
+      "capacity": 87523,
+      "type": "Open-air",
+      "event": "FIFA World Cup 2026",
+      "directions": {
+        "by_train": "Take Metro Line 2 (Blue) to Tasqueña station, then Light Rail (Tren Ligero) to Estadio Azteca station. ~5 min walk from station to Gate A.",
+        "by_bus": "Metrobús Line 1 to Doctor Gálvez stop, then 15 min walk south. Or take RTP buses from Chapultepec.",
+        "by_car_from_manhattan": "From Centro Histórico: Calzada de Tlalpan south for ~12 km. ~30 min drive.",
+        "by_car_from_newark_airport": "From Airport (MEX): Viaducto Miguel Alemán → Calzada de Tlalpan south. ~45 min drive.",
+        "by_rideshare": "Uber/DiDi drop-off at North Plaza (Gate A). Follow orange rideshare signs."
+      },
+      "gates": {
+        "Gate A": { "location": "Main North", "status": "Clear", "wait_time_min": 5, "features": "Main entrance, metro access, rideshare drop-off nearby" },
+        "Gate B": { "location": "East Ramp", "status": "Accessible", "wait_time_min": 4, "features": "ADA accessible ramp entry, automatic sliding gates" },
+        "Gate C": { "location": "South Tunnel", "status": "Moderate", "wait_time_min": 12, "features": "Tunnel entry, standard security screening" },
+        "Gate D": { "location": "West Escalator", "status": "Clear", "wait_time_min": 6, "features": "Escalator and stairs access, VIP entry" }
+      },
+      "parking": {
+        "general": "Lots 1-5 surrounding the stadium — 500 MXN per vehicle",
+        "accessible_ada": "Lot 2 (closest to Gate B accessible entrance). Free for permit holders.",
+        "ev_charging": "Lot 1 — 6 universal Level 2 chargers. First-come, first-served.",
+        "rideshare_pickup": "North Plaza (Gate A)",
+        "tailgating": "Lots 1 and 3. Propane grills allowed. No open flames after kickoff."
+      },
+      "sustainability": {
+        "transit_option": "Azteca Light Rail Station",
+        "station_location": "North Plaza",
+        "ev_parking": "Lot 1",
+        "green_fan_pass": "Unlocked by taking Light Rail or using EV parking"
+      },
+      "food_courts": {
+        "level_1": "Tlalpan Concourse (Sections 100-130)",
+        "level_2": "General Concourse (Sections 200-240)",
+        "options": "Mexican street food, tacos, tortas, standard American fare, vegan options",
+        "premium_dining": "Azteca Club Lounge (Sections 212-216, premium tickets only)",
+        "water_refill": "Free water stations near Sections 104, 122, 210"
+      },
+      "key_locations": {
+        "guest_services": "Section 114, North Entrance",
+        "lost_and_found": "Section 114, North Entrance",
+        "first_aid": ["Section 102 (Level 1)", "Section 220 (Level 2)"],
+        "family_restrooms": ["Section 105", "Section 128", "Section 218"],
+        "fan_shops": ["North Plaza (outdoor)", "Section 112 (Level 1)", "Section 222 (Level 2)"],
+        "nursing_room": "Section 108 (Level 1)",
+        "volunteer_center": "Lot 5 (southwest corner)"
+      },
+      "wifi": {
+        "network": "Azteca_FIFA2026",
+        "password": "None required",
+        "speed": "45 Mbps per device"
+      }
+    },
+    "bcplace": {
+      "name": "BC Place",
+      "full_name": "BC Place (Vancouver)",
+      "address": "777 Pacific Boulevard, Vancouver, BC V6B 4Y8, Canada",
+      "capacity": 54500,
+      "type": "Retractable roof (covered)",
+      "event": "FIFA World Cup 2026",
+      "directions": {
+        "by_train": "Take the Expo Line or Canada Line SkyTrain to Stadium-Chinatown Station. BC Place is a 2 min walk from the station exit.",
+        "by_bus": "Multiple TransLink bus routes stop at Pacific Boulevard. Routes 3, 8, 19 recommended.",
+        "by_car_from_manhattan": "Head south on Cambie Street → turn left on Pacific Boulevard. BC Place is on your right. ~10 min drive.",
+        "by_car_from_newark_airport": "Canada Line SkyTrain directly to Stadium-Chinatown (~25 min). By car: Grant McConachie Way → Highway 99 → Cambie Bridge → Pacific Boulevard. ~30 min drive.",
+        "by_rideshare": "Uber/Lyft drop-off at Terry Fox Plaza (Gate B area). Follow green rideshare signs."
+      },
+      "gates": {
+        "Gate A": { "location": "Pacific Boulevard", "status": "Clear", "wait_time_min": 3, "features": "Main entrance, closest to SkyTrain station, VIP lanes" },
+        "Gate B": { "location": "Terry Fox Plaza", "status": "Accessible", "wait_time_min": 2, "features": "ADA accessible, rideshare drop-off nearby, step-free entry" },
+        "Gate C": { "location": "South Entrance", "status": "Moderate", "wait_time_min": 9, "features": "Standard entry, escalator access" },
+        "Gate D": { "location": "West Entrance", "status": "Heavy Congestion", "wait_time_min": 18, "features": "Frequently congested, stair-access only, fans should use Gate A or B instead" }
+      },
+      "parking": {
+        "general": "Nearby parkades: Pacific Boulevard Parkade, Expo Lot — $25-40 CAD",
+        "accessible_ada": "Pacific Boulevard Parkade Level 1 (closest to Gate B accessible entrance)",
+        "ev_charging": "Lot G — 8 universal Level 2 chargers. First-come, first-served.",
+        "rideshare_pickup": "Terry Fox Plaza (Gate B area)",
+        "tailgating": "No tailgating allowed in BC Place parking areas due to city bylaws."
+      },
+      "sustainability": {
+        "transit_option": "Stadium-Chinatown SkyTrain",
+        "station_location": "West Concourse Bridge",
+        "ev_parking": "Lot G",
+        "green_fan_pass": "Unlocked by SkyTrain transit or EV parking"
+      },
+      "food_courts": {
+        "level_1": "Main Concourse (Sections 101-148)",
+        "level_2": "Suite Level (Sections 201-250)",
+        "options": "Canadian classics, poutine, Asian fusion, vegan, gluten-free",
+        "premium_dining": "BC Club Lounge (Sections 208-212, club tickets only)",
+        "water_refill": "Free water stations near Sections 102, 120, 138, 215"
+      },
+      "key_locations": {
+        "guest_services": "Section 103, Concourse Level 1",
+        "lost_and_found": "Section 103, Concourse Level 1",
+        "first_aid": ["Section 114 (Level 1)", "Section 236 (Level 2)"],
+        "family_restrooms": ["Section 110", "Section 130", "Section 210", "Section 240"],
+        "fan_shops": ["Terry Fox Plaza (outdoor)", "Section 105 (Level 1)", "Section 225 (Level 2)"],
+        "nursing_room": "Section 118 (Level 1)",
+        "volunteer_center": "Lot G (northeast corner)"
+      },
+      "wifi": {
+        "network": "BCPlace_FIFA2026",
+        "password": "None required",
+        "speed": "60 Mbps per device"
+      }
+    }
+  }
+}

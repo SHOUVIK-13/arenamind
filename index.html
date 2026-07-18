@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArenaMind - Smart Venue Operations Platform</title>
+  <link rel="stylesheet" href="styles.css?v=2">
+  <!-- Google Fonts: Inter and Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Football Opening Splash Screen -->
+  <div id="splash-screen">
+    <div class="splash-content">
+      <div class="splash-football-wrapper">
+        <svg class="splash-football" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#1e293b" stroke-width="3" />
+          <polygon points="50,35 62,45 58,60 42,60 38,45" fill="#1e293b" />
+          <line x1="50" y1="35" x2="50" y2="15" stroke="#1e293b" stroke-width="2" />
+          <line x1="62" y1="45" x2="78" y2="35" stroke="#1e293b" stroke-width="2" />
+          <line x1="58" y1="60" x2="68" y2="78" stroke="#1e293b" stroke-width="2" />
+          <line x1="42" y1="60" x2="32" y2="78" stroke="#1e293b" stroke-width="2" />
+          <line x1="38" y1="45" x2="22" y2="35" stroke="#1e293b" stroke-width="2" />
+          <polygon points="50,15 58,2 42,2" fill="#1e293b" />
+          <polygon points="78,35 90,25 94,40" fill="#1e293b" />
+          <polygon points="68,78 78,92 62,98" fill="#1e293b" />
+          <polygon points="32,78 22,92 38,98" fill="#1e293b" />
+          <polygon points="22,35 10,25 6,40" fill="#1e293b" />
+        </svg>
+      </div>
+      <div class="splash-ripple"></div>
+      <div class="splash-text">ArenaMind AI</div>
+    </div>
+  </div>
+
+  <!-- Announcement Ticker -->
+  <div class="announcement-ticker" role="region" aria-label="System announcements">
+    <div class="ticker-content" id="system-ticker">
+      🏆 Welcome to FIFA World Cup 2026! | 📢 Notice: MetLife Stadium is operating at high occupancy. | 💡 Tip: Use transit line B for direct downtown access. | 🟢 Gate A is designated for step-free accessible entry.
+    </div>
+  </div>
+
+  <!-- Global Header -->
+  <header class="app-header">
+    <div class="header-logo">
+      <span class="logo-icon">🏟️</span>
+      <div class="logo-text">
+        <h1 id="logo-title">ArenaMind <span class="badge">AI</span></h1>
+        <p id="logo-sub">Smart Venue Operations</p>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="header-controls">
+      <!-- Theme Toggle Switch -->
+      <button class="btn btn-secondary btn-small" id="btn-theme-toggle" aria-label="Toggle dark/light theme">🌗 System Theme</button>
+
+      <!-- Stadium Selector -->
+      <div class="control-group">
+        <label for="stadium-select" class="sr-only">Select Stadium</label>
+        <select id="stadium-select" class="styled-select">
+          <option value="metlife" selected>MetLife Stadium (NY/NJ)</option>
+          <option value="azteca">Estadio Azteca (Mexico City)</option>
+          <option value="bcplace">BC Place (Vancouver)</option>
+        </select>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="control-group">
+        <label for="lang-select" class="sr-only">Select Language</label>
+        <select id="lang-select" class="styled-select">
+          <option value="en">🇺🇸 EN</option>
+          <option value="es">🇲🇽 ES</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="pt">🇧🇷 PT</option>
+          <option value="ar">🇸🇦 AR</option>
+          <option value="de">🇩🇪 DE</option>
+        </select>
+      </div>
+
+      <!-- Mode Selector Tabs -->
+      <nav class="mode-navigation" aria-label="Dashboard mode selection">
+        <button class="mode-tab active" data-target="view-landing" id="tab-landing">Home</button>
+        <button class="mode-tab" data-target="view-fan" id="tab-fan">Fan Portal</button>
+        <button class="mode-tab staff-only" data-target="view-volunteer" id="tab-volunteer" style="display: none;">Volunteer</button>
+        <button class="mode-tab staff-only" data-target="view-organizer" id="tab-organizer" style="display: none;">Organizer</button>
+        <button class="mode-tab staff-only" data-target="view-admin" id="tab-admin" style="display: none;">Admin</button>
+      </nav>
+
+      <!-- Auth Action -->
+      <button class="btn btn-primary" id="btn-login-trigger">Staff Login</button>
+      <div class="user-profile-badge" id="user-profile-badge" style="display: none;">
+        <span class="user-role-badge" id="profile-role">Organizer</span>
+        <button class="btn btn-text btn-logout" id="btn-logout">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Viewport Container -->
+  <main class="app-main" id="app-viewport">
+
+    <!-- Landing View -->
+    <section id="view-landing" class="viewport-section active">
+      <div class="hero-container">
+        <div class="hero-text-content">
+          <span class="hero-tagline">FIFA WORLD CUP 2026</span>
+          <h2>AI-Driven Operational Intelligence for Next-Gen Arenas</h2>
+          <p>ArenaMind bridges the gap between stadium operations, volunteers, and tournament attendees. Integrating semantic RAG search, live crowd intelligence, multilingual translation, and real-time incident routing.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-large" onclick="app.switchView('view-fan')">Explore Fan Portal</button>
+            <button class="btn btn-secondary btn-large" id="hero-staff-login">Organizers & Staff Gateway</button>
+          </div>
+        </div>
+        <div class="hero-graphic">
+          <div class="glass-card stat-matrix">
+            <div class="matrix-item">
+              <span class="matrix-label">Live Occupancy</span>
+              <span class="matrix-value text-green">84,120</span>
+              <span class="matrix-sub">95.4% capacity</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Avg. Gate Wait</span>
+              <span class="matrix-value text-cyan">4.2 min</span>
+              <span class="matrix-sub">Optimal flow</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Active Incidents</span>
+              <span class="matrix-value text-yellow">2</span>
+              <span class="matrix-sub">Being resolved</span>
+            </div>
+            <div class="matrix-item">
+              <span class="matrix-label">Sustainability Rating</span>
+              <span class="matrix-value text-green">A+</span>
+              <span class="matrix-sub">82% eco transit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🔍</div>
+          <h3>Local RAG AI Chat</h3>
+          <p>Retrieve dynamic guidelines, transit recommendations, and venue maps via localized vector-style search.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Operations Copilot</h3>
+          <p>Organizers execute scenario forecasts to automate volunteer deployment and system-wide announcements.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">🗺️</div>
+          <h3>Accessibility Wayfinder</h3>
+          <p>Interactive maps showing live queue levels, elevator paths, and ramp waypoints in real-time.</p>
+        </div>
+        <div class="feature-card glass-card">
+          <div class="feature-icon">💬</div>
+          <h3>Universal Translator</h3>
+          <p>Breaks down language barriers for international volunteers and fans with 6-language translations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fan Dashboard -->
+    <section id="view-fan" class="viewport-section">
+      <div class="dashboard-grid grid-2-columns">
+        
+        <!-- Left: AI Chat and FAQs -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- AI Matchday Assistant -->
+          <div class="glass-card flex-grow chat-container">
+            <div class="card-header border-bottom flex-between">
+              <h3 id="heading-chat-assistant">🤖 AI Matchday Assistant</h3>
+              <div class="ai-toggle-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="ai-toggle-label" style="font-size: 0.7rem; color: var(--accent-primary); font-weight: 600;">⚡ Powered by Gemini</span>
+              </div>
+            </div>
+            <div class="chat-messages" id="fan-chat-messages">
+              <div class="chat-bubble bot-message">
+                Hello! I am ArenaMind. I have direct access to MetLife Stadium's knowledge base. How can I help you today?
+              </div>
+            </div>
+            <div class="chat-suggestions" id="chat-suggestions">
+              <button onclick="app.sendSuggestedQuery('Where is Gate 3 and what is the wait time?')">Gate 3 Info</button>
+              <button onclick="app.sendSuggestedQuery('How do I find step-free wheelchair access?')">Accessibility Path</button>
+              <button onclick="app.sendSuggestedQuery('What eco-friendly transport options are available?')">Transit & Eco-Score</button>
+            </div>
+            <form class="chat-input-form" id="fan-chat-form">
+              <input type="text" id="fan-chat-input" placeholder="Ask about concessions, gate navigation, schedules..." required autocomplete="off">
+              <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+          </div>
+
+          <!-- FAQ Accordion & Schedule Details -->
+          <div class="glass-card accordion-card">
+            <div class="card-header">
+              <h3 id="heading-matchday-info">ℹ️ Matchday Information</h3>
+            </div>
+            <div class="accordion-content">
+              <details name="info-accordion" open id="live-match-details">
+                <summary>⚽ Live Match Score &amp; Timeline</summary>
+                <div class="details-content">
+                  <div class="live-score-header" style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--glass-border); margin-bottom: 0.5rem;">
+                    <span class="live-indicator" id="live-indicator-badge" style="background: var(--accent-red); color: white; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.65rem; font-weight: 800; animation: pulse-glow 1.5s infinite;">LIVE</span>
+                    <div class="score-display" style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                      <span class="team-name" id="team-home">USA</span>
+                      <span class="score-val" id="score-usa" style="color: var(--accent-cyan);">0</span>
+                      <span class="score-divider">:</span>
+                      <span class="score-val" id="score-eng" style="color: var(--accent-cyan);">0</span>
+                      <span class="team-name" id="team-away">ENG</span>
+                    </div>
+                    <span class="match-time" id="score-time" style="font-family: var(--font-family-mono); font-size: 0.85rem; color: var(--text-secondary);">1'</span>
+                  </div>
+                  <!-- Dynamic Stadium & Attendance Meta Row -->
+                  <div class="live-match-meta" style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); padding: 0 0.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+                    <span id="score-stadium">🏟️ Loading...</span>
+                    <span id="score-attendance">👥 Attendance: --</span>
+                  </div>
+                  <div class="timeline-container" id="score-timeline" style="max-height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <p class="placeholder-text" style="font-size: 0.75rem; color: var(--text-muted); text-align: center;">Waiting for live timeline update...</p>
+                  </div>
+                </div>
+              </details>
+              <details name="info-accordion">
+                <summary>📋 Venue Prohibited Items</summary>
+                <div class="details-content">
+                  <p>Strictly prohibited inside the stadium: bags larger than 12&quot;x6&quot;x12&quot; (must be clear), professional camera gear, aerosol containers, glass bottles, and external food/beverages (unless medically necessary).</p>
+                </div>
+              </details>
+              <details name="info-accordion">
+                <summary>🎒 Lost &amp; Found Procedure</summary>
+                <div class="details-content">
+                  <p>Report lost items at any Guest Services booth located near Sections 116, 142, and 224. Or query the chatbot to check if it has been cataloged by staff.</p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Wayfinder & Sustainability -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- Interactive Map -->
+          <div class="glass-card map-container">
+            <div class="card-header border-bottom flex-between">
+              <h3 id="heading-wayfinder">🗺️ Interactive Wayfinder</h3>
+              <div class="map-controls">
+                <button class="btn btn-small btn-secondary active" id="btn-map-standard">Standard</button>
+                <button class="btn btn-small btn-secondary" id="btn-map-accessible">♿ Accessible</button>
+              </div>
+            </div>
+            <div class="map-canvas-wrapper">
+              <svg id="stadium-svg" viewBox="0 0 500 400" width="100%" height="100%">
+                <!-- Stadium Shapes for different layouts -->
+                <g id="layout-metlife">
+                  <circle cx="250" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+                  <circle cx="250" cy="200" r="150" fill="rgba(13, 17, 27, 0.6)" stroke="rgba(255,255,255,0.1)" stroke-width="4" />
+                </g>
+                <g id="layout-azteca" style="display: none;">
+                  <ellipse cx="250" cy="200" rx="190" ry="160" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+                  <ellipse cx="250" cy="200" rx="160" ry="130" fill="rgba(13, 17, 27, 0.6)" stroke="rgba(255,255,255,0.1)" stroke-width="4" />
+                </g>
+                <g id="layout-bcplace" style="display: none;">
+                  <rect x="60" y="40" width="380" height="320" rx="30" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+                  <rect x="90" y="70" width="320" height="260" rx="20" fill="rgba(13, 17, 27, 0.6)" stroke="rgba(255,255,255,0.1)" stroke-width="4" />
+                  <!-- Roof structure design lines -->
+                  <path d="M 60 40 L 250 150 L 440 40 M 60 360 L 250 250 L 440 360" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                  <rect x="180" y="140" width="140" height="120" rx="10" fill="rgba(0,0,0,0.15)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-dasharray="4 4" />
+                </g>
+                
+                <!-- Soccer Field Center -->
+                <rect x="200" y="160" width="100" height="80" rx="4" fill="rgba(0,242,254,0.1)" stroke="rgba(0,242,254,0.4)" stroke-width="2"/>
+                <line x1="250" y1="160" x2="250" y2="240" stroke="rgba(0,242,254,0.4)" stroke-width="2"/>
+                <circle cx="250" cy="200" r="15" fill="none" stroke="rgba(0,242,254,0.4)" stroke-width="2"/>
+
+                <!-- Gates & Nodes (Interacts with popover / highlighting) -->
+                
+                <!-- Gates -->
+                <!-- Gate A (Top Left) -->
+                <g class="map-node" id="node-gateA">
+                  <circle cx="120" cy="90" r="16" class="node-circle status-green" />
+                  <text x="120" y="94" class="node-label">A</text>
+                </g>
+                <!-- Gate B (Top Right) -->
+                <g class="map-node" id="node-gateB">
+                  <circle cx="380" cy="90" r="16" class="node-circle status-yellow" />
+                  <text x="380" y="94" class="node-label">B</text>
+                </g>
+                <!-- Gate C (Bottom Right) -->
+                <g class="map-node" id="node-gateC">
+                  <circle cx="380" cy="310" r="16" class="node-circle status-red" />
+                  <text x="380" y="314" class="node-label">C</text>
+                </g>
+                <!-- Gate D (Bottom Left) -->
+                <g class="map-node" id="node-gateD">
+                  <circle cx="120" cy="310" r="16" class="node-circle status-green" />
+                  <text x="120" y="314" class="node-label">D</text>
+                </g>
+
+                <!-- Transit Hub (Far Left Center) -->
+                <g class="map-node" id="node-transit">
+                  <rect x="35" y="180" width="30" height="40" rx="4" class="node-rect status-green" />
+                  <text x="50" y="205" class="node-label">🚊</text>
+                </g>
+                <!-- Food Court (Right Center) -->
+                <g class="map-node" id="node-food">
+                  <circle cx="430" cy="200" r="15" class="node-circle status-blue" />
+                  <text x="430" y="204" class="node-label">🍔</text>
+                </g>
+
+                <!-- NEW: Parking & Transportation Nodes -->
+                <!-- ADA Parking (Outer Top Left) -->
+                <g class="map-node" id="node-ada-parking">
+                  <circle cx="85" cy="55" r="15" class="node-circle status-blue" />
+                  <text x="85" y="59" class="node-label">♿</text>
+                </g>
+                <!-- EV Charging (Outer Bottom Left) -->
+                <g class="map-node" id="node-ev-charging">
+                  <circle cx="85" cy="345" r="15" class="node-circle status-blue" />
+                  <text x="85" y="349" class="node-label">⚡</text>
+                </g>
+                <!-- Rideshare Lot K (Outer Top Right) -->
+                <g class="map-node" id="node-rideshare">
+                  <circle cx="415" cy="55" r="15" class="node-circle status-blue" />
+                  <text x="415" y="59" class="node-label">🚖</text>
+                </g>
+
+                <!-- NEW: Key Stadium Services & Operations Nodes -->
+                <!-- Guest Services (Inner Top Center) -->
+                <g class="map-node" id="node-guest-services">
+                  <circle cx="250" cy="100" r="15" class="node-circle status-blue" />
+                  <text x="250" y="104" class="node-label">ℹ️</text>
+                </g>
+                <!-- First Aid Section 109 (Inner Bottom Center) -->
+                <g class="map-node" id="node-first-aid">
+                  <circle cx="250" cy="300" r="15" class="node-circle status-red" />
+                  <text x="250" y="304" class="node-label">🚨</text>
+                </g>
+                <!-- Fan Shop (Outer Bottom Right) -->
+                <g class="map-node" id="node-fan-shop">
+                  <circle cx="415" cy="345" r="15" class="node-circle status-blue" />
+                  <text x="415" y="349" class="node-label">🛍️</text>
+                </g>
+                <!-- Volunteer Center Lot P (Outer Top Left) -->
+                <g class="map-node" id="node-volunteer">
+                  <circle cx="35" cy="110" r="15" class="node-circle status-blue" />
+                  <text x="35" y="114" class="node-label">🙋</text>
+                </g>
+
+                <!-- Routing Path Overlays (Controlled by JS) -->
+                <path id="route-path-standard" d="M 50 200 L 120 90 L 250 160" fill="none" stroke="#00f2fe" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 6" style="display:none;"/>
+                <path id="route-path-accessible" d="M 50 200 L 120 200 L 120 310 L 250 240" fill="none" stroke="#00ff66" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 6" style="display:none;"/>
+              </svg>
+            </div>
+            
+            <!-- Native HTML Popovers for nodes (Populated Dynamically via JS) -->
+            <div id="popover-gateA" popover class="glass-card map-popover"></div>
+            <div id="popover-gateB" popover class="glass-card map-popover"></div>
+            <div id="popover-gateC" popover class="glass-card map-popover"></div>
+            <div id="popover-gateD" popover class="glass-card map-popover"></div>
+            <div id="popover-transit" popover class="glass-card map-popover"></div>
+            <div id="popover-food" popover class="glass-card map-popover"></div>
+            <div id="popover-ada-parking" popover class="glass-card map-popover"></div>
+            <div id="popover-ev-charging" popover class="glass-card map-popover"></div>
+            <div id="popover-rideshare" popover class="glass-card map-popover"></div>
+            <div id="popover-first-aid" popover class="glass-card map-popover"></div>
+            <div id="popover-guest-services" popover class="glass-card map-popover"></div>
+            <div id="popover-fan-shop" popover class="glass-card map-popover"></div>
+            <div id="popover-volunteer" popover class="glass-card map-popover"></div>
+          </div>
+
+          <!-- Sustainability Tracker -->
+          <div class="glass-card sustainability-card">
+            <div class="card-header border-bottom">
+              <h3 id="heading-greengoal">🍃 GreenGoal Sustainability Tracker</h3>
+            </div>
+            <div class="sustainability-content">
+              <p class="description-text">Calculate your travel carbon footprint and unlock your digital FIFA Green Fan Pass.</p>
+              <div class="calc-grid">
+                <div class="input-field">
+                  <label for="transit-method">Transportation Mode</label>
+                  <select id="transit-method" class="styled-select" onchange="app.calculateCarbon()">
+                    <option value="train">🚄 Train / Light Rail (Eco-choice)</option>
+                    <option value="carpool">🚗 Carpool / EV Shuttle</option>
+                    <option value="single-car">🚙 Standard Car (Single Driver)</option>
+                    <option value="flight">✈️ Flight (International Fan)</option>
+                  </select>
+                </div>
+                <div class="input-field">
+                  <label for="transit-dist">One-Way Distance (Miles)</label>
+                  <input type="number" id="transit-dist" value="25" min="1" max="10000" class="styled-input" oninput="app.calculateCarbon()">
+                </div>
+              </div>
+
+              <!-- Carbon Matrix output -->
+              <div class="carbon-output-container">
+                <div class="output-block">
+                  <span class="block-label">Carbon Generated</span>
+                  <span class="block-val text-cyan" id="carbon-gen">1.2 kg CO₂</span>
+                </div>
+                <div class="output-block">
+                  <span class="block-label">Green Rank</span>
+                  <span class="block-val text-green" id="carbon-rank">Gold Eco-Fan</span>
+                </div>
+              </div>
+
+              <div class="carbon-actions flex-between">
+                <button class="btn btn-secondary btn-small" onclick="app.claimEcoBadge()">Offset Footprint</button>
+                <div class="badge-locked" id="badge-pass-icon">🔒 Pass Locked</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Volunteer Portal -->
+    <section id="view-volunteer" class="viewport-section">
+      <div class="dashboard-grid grid-2-columns">
+        
+        <!-- Left: Incident Reporting Form -->
+        <div class="dashboard-column flex-column gap-normal">
+          <div class="glass-card">
+            <div class="card-header border-bottom">
+              <h3 id="heading-report-incident">📢 Report Local Field Incident</h3>
+            </div>
+            <form class="styled-form" id="incident-form">
+              <div class="form-group-row">
+                <div class="input-field">
+                  <label for="inc-category">Incident Category</label>
+                  <select id="inc-category" class="styled-select" required>
+                    <option value="congestion">Crowd Congestion</option>
+                    <option value="medical">Medical Emergency</option>
+                    <option value="security">Security Alert</option>
+                    <option value="facility">Facility Damage / Spill</option>
+                  </select>
+                </div>
+                <div class="input-field">
+                  <label for="inc-severity">Severity Rating</label>
+                  <select id="inc-severity" class="styled-select" required>
+                    <option value="low">🟡 Low (Minor operational delay)</option>
+                    <option value="medium" selected>🟠 Medium (Action required)</option>
+                    <option value="high">🔴 High (Immediate staff dispatch)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group-row">
+                <div class="input-field">
+                  <label for="inc-location">Stadium Section / Location</label>
+                  <select id="inc-location" class="styled-select" required>
+                    <option value="Gate A">Gate A Entrance</option>
+                    <option value="Gate B">Gate B Escalators</option>
+                    <option value="Gate C">Gate C Ticket Booth</option>
+                    <option value="Section 102">Lower Bowl Section 102</option>
+                    <option value="Section 220">Concourse Level 2 Sec 220</option>
+                    <option value="Food Court">Central Concourse Food Court</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="inc-desc">Incident Description</label>
+                <textarea id="inc-desc" rows="4" class="styled-textarea" placeholder="E.g., Spill of beverage causing slippery floor, or bottleneck starting near escalator entrance..." required></textarea>
+              </div>
+
+              <!-- AI Copilot Help Box within Form -->
+              <div class="ai-helper-box" id="incident-ai-helper" style="display: none;">
+                <h5>⚡ ArenaMind Security Analysis:</h5>
+                <p id="incident-ai-eval">Input details to generate classification.</p>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full">Submit &amp; Dispatch Incident</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Tasks List & SOP Library -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- Active Tasks assigned to this Volunteer -->
+          <div class="glass-card tasks-container flex-grow">
+            <div class="card-header border-bottom">
+              <h3 id="heading-task-assignments">📋 Active Task Assignments</h3>
+            </div>
+            <div class="tasks-list" id="volunteer-tasks-list">
+              <!-- Dynamically populated tasks -->
+              <div class="no-items">No active tasks assigned to your station.</div>
+            </div>
+          </div>
+
+          <!-- SOP Library Finder (RAG-Enabled) -->
+          <div class="glass-card sop-container">
+            <div class="card-header border-bottom">
+              <h3 id="heading-sop-copilot">📚 AI Volunteer SOP Copilot</h3>
+            </div>
+            <div class="sop-content">
+              <p class="description-text">Instantly retrieve official World Cup 2026 Standard Operating Procedures (SOP) via RAG.</p>
+              <form class="chat-input-form" id="sop-search-form">
+                <input type="text" id="sop-search-input" placeholder="Query: 'Crowd control protocols' or 'Medical alert steps'..." required>
+                <button type="submit" class="btn btn-secondary">Search</button>
+              </form>
+              <div class="sop-results-box" id="sop-results">
+                <p class="placeholder-text">Query results will stream here...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Organizer Console -->
+    <section id="view-organizer" class="viewport-section">
+      <div class="dashboard-grid grid-2-columns">
+        
+        <!-- Left: Operations Scenario Sim & Broadcast Generator -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- AI Operations Copilot (What-if scenario runner) -->
+          <div class="glass-card scenario-container flex-grow">
+            <div class="card-header border-bottom">
+              <h3 id="heading-ops-copilot">🎯 AI Operations Copilot (Decision Support)</h3>
+            </div>
+            <div class="scenario-body">
+              <p class="description-text">Simulate emergency stadium scenarios. The Copilot executes risk modeling, drafts volunteer task allocations, and devises evacuation routing scripts.</p>
+              <div class="scenario-suggestions" id="scenario-suggestions-container">
+                <button class="btn btn-small btn-secondary" onclick="app.runScenario('Gate 3/C Congestion Delay')">⚡ Concourse Bottleneck</button>
+                <button class="btn btn-small btn-secondary" onclick="app.runScenario('Heavy Storm Alert & Match Delay')">⛈️ Thunderstorm Delays</button>
+                <button class="btn btn-small btn-secondary" onclick="app.runScenario('Elevator Outage near Section 112')">♿ Access Elevator Defect</button>
+              </div>
+              <div class="scenario-output" id="scenario-output-box">
+                <p class="placeholder-text">Execute a preset scenario or type custom command below to receive tactical recommendations...</p>
+              </div>
+              <form class="chat-input-form" id="scenario-custom-form">
+                <input type="text" id="scenario-custom-input" placeholder="Custom Scenario: 'Power grid failure in Concourse 2'..." required>
+                <button type="submit" class="btn btn-primary">Analyze</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Announcement Generator -->
+          <div class="glass-card announcement-card">
+            <div class="card-header border-bottom">
+              <h3 id="heading-announcement-drafts">📢 GenAI Multilingual Announcement Drafts</h3>
+            </div>
+            <div class="announcement-body">
+              <div class="input-field">
+                <label for="announce-topic">Announcement Topic / Incident</label>
+                <input type="text" id="announce-topic" placeholder="E.g., Concourse 1 spilled soda cleaning, or redirect fans from Gate C to D" class="styled-input">
+              </div>
+              <div class="generate-actions flex-between">
+                <button class="btn btn-secondary btn-small" onclick="app.generateAnnouncement()">Draft Announcements</button>
+                <button class="btn btn-primary btn-small" id="btn-broadcast-alert" disabled>Broadcast live ticker</button>
+              </div>
+              <div class="multilingual-drafts-grid" id="announcement-drafts-results">
+                <!-- Dynamically filled languages drafts -->
+                <div class="no-items">Enter topic and click draft to render.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Incident Logs & Sensors -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- Active Incident Monitor -->
+          <div class="glass-card incident-monitor flex-grow">
+            <div class="card-header border-bottom">
+              <h3 id="heading-incident-dispatch">🚨 Active Incident Dispatch Board</h3>
+            </div>
+            <div class="incident-list" id="organizer-incidents-list">
+              <!-- Dynamically populated from local DB -->
+            </div>
+          </div>
+
+          <!-- Ops Metrics Gauges -->
+          <div class="glass-card metrics-card">
+            <div class="card-header border-bottom">
+              <h3 id="heading-sensor-telemetry">📈 Real-Time Sensor Telemetry</h3>
+            </div>
+            <div class="metrics-grid">
+              <div class="metric-dial">
+                <div class="dial-container">
+                  <svg class="dial-svg" viewBox="0 0 100 100">
+                    <circle class="dial-bg" cx="50" cy="50" r="40" />
+                    <circle class="dial-bar bar-green" id="dial-occupancy" stroke-dashoffset="50" cx="50" cy="50" r="40" />
+                  </svg>
+                  <span class="dial-value" id="dial-occupancy-val">84%</span>
+                </div>
+                <span class="dial-label">Stadium Occupancy</span>
+              </div>
+              <div class="metric-dial">
+                <div class="dial-container">
+                  <svg class="dial-svg" viewBox="0 0 100 100">
+                    <circle class="dial-bg" cx="50" cy="50" r="40" />
+                    <circle class="dial-bar bar-cyan" id="dial-transit" stroke-dashoffset="120" cx="50" cy="50" r="40" />
+                  </svg>
+                  <span class="dial-value" id="dial-transit-val">12m</span>
+                </div>
+                <span class="dial-label" id="dial-transit-label">Train Wait Times</span>
+              </div>
+              <div class="metric-dial">
+                <div class="dial-container">
+                  <svg class="dial-svg" viewBox="0 0 100 100">
+                    <circle class="dial-bg" cx="50" cy="50" r="40" />
+                    <circle class="dial-bar bar-red animate-pulse" id="dial-congestion" stroke-dashoffset="180" cx="50" cy="50" r="40" />
+                  </svg>
+                  <span class="dial-value" id="dial-congestion-val">Moderate</span>
+                </div>
+                <span class="dial-label">Gate Congestion</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Admin Console -->
+    <section id="view-admin" class="viewport-section">
+      <div class="dashboard-grid grid-2-columns">
+        
+        <!-- Left: KB Management & User Accounts -->
+        <div class="dashboard-column flex-column gap-normal">
+          <!-- KB Manager -->
+          <div class="glass-card kb-container">
+            <div class="card-header border-bottom">
+              <h3 id="heading-admin-kb">📂 RAG Knowledge Base Document Indexer</h3>
+            </div>
+            <div class="kb-body">
+              <p class="description-text">Simulate uploading files (SOP PDFs, match rules, maps) to generate text chunks and update the semantic vector database.</p>
+              <div class="file-uploader" id="kb-uploader-box">
+                <span class="upload-icon">📁</span>
+                <p>Drag &amp; Drop SOP, Maps, or FAQ files here, or click to browse</p>
+                <input type="file" id="kb-file-input" style="display:none;">
+              </div>
+              <div class="uploaded-files-list" id="kb-files-list">
+                <!-- Hardcoded pre-loaded docs -->
+                <div class="kb-file-item">
+                  <span class="file-type-icon">PDF</span>
+                  <div class="file-details">
+                    <span class="file-name">Volunteer_SOP_Security_v3.pdf</span>
+                    <span class="file-size">1.2 MB | 45 vector chunks indexed</span>
+                  </div>
+                  <span class="file-status text-green">Active</span>
+                </div>
+                <div class="kb-file-item">
+                  <span class="file-type-icon">JSON</span>
+                  <div class="file-details">
+                    <span class="file-name" id="admin-map-filename">MetLife_Stadium_Wayfinder_Map.json</span>
+                    <span class="file-size">480 KB | 24 nodes indexed</span>
+                  </div>
+                  <span class="file-status text-green">Active</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Management -->
+          <div class="glass-card user-mgr-container flex-grow">
+            <div class="card-header border-bottom">
+              <h3 id="heading-admin-users">👥 User Account Roles &amp; Access Keys</h3>
+            </div>
+            <div class="user-mgr-body">
+              <table class="user-table">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Full Name</th>
+                    <th>Assigned Role</th>
+                    <th>MFA Status</th>
+                    <th>Permissions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-user-table">
+                  <!-- JS populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Live System & Security logs -->
+        <div class="dashboard-column flex-column gap-normal">
+          <div class="glass-card logs-container flex-grow">
+            <div class="card-header border-bottom">
+              <h3 id="heading-admin-logs">🔒 Cyber Security &amp; Firewall Event Terminal</h3>
+            </div>
+            <div class="terminal-body" id="system-logs-terminal">
+              <!-- Logs print here -->
+            </div>
+            <div class="card-footer text-right">
+              <button class="btn btn-secondary btn-small" onclick="app.clearLogs()">Clear Security Logs</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <p id="footer-text">ArenaMind Smart Venue Operations Platform | Developed by <a href="https://www.linkedin.com/in/shouvik-mukherjee-9163a3169/" target="_blank" rel="noopener noreferrer" class="developer-link">Shouvik Mukherjee</a></p>
+    </div>
+  </footer>
+
+  <!-- Login dialog gateway modal -->
+  <dialog class="login-dialog glass-card" id="login-modal">
+    <div class="modal-header">
+      <h3 id="title-auth">🔒 Staff Authentication Portal</h3>
+      <button class="btn-close-modal" onclick="app.closeLoginModal()">✕</button>
+    </div>
+    
+    <div class="login-form-container">
+      <form id="login-form" class="styled-form">
+        <div class="input-field">
+          <label for="login-username" id="label-username">Staff Username</label>
+          <input type="text" id="login-username" class="styled-input" placeholder="Enter username..." required autocomplete="username">
+        </div>
+        <div class="input-field">
+          <label for="login-password" id="label-password">Password</label>
+          <input type="password" id="login-password" class="styled-input" placeholder="Enter password..." required autocomplete="current-password">
+        </div>
+        
+        <!-- Role selection -->
+        <div class="input-field">
+          <label for="login-role" id="label-role">Assign Operating Role</label>
+          <select id="login-role" class="styled-select" required>
+            <option value="volunteer">Volunteer (Field steward/medical helper)</option>
+            <option value="organizer">Organizer (Venue Operations Director)</option>
+            <option value="admin">System Administrator</option>
+          </select>
+        </div>
+
+        <!-- Simulated MFA Pin Entry -->
+        <div class="mfa-section" id="mfa-section" style="display:none;">
+          <div class="mfa-header-badge">
+            <span id="label-mfa-challenge">🛡️ Two-Factor authentication challenge active</span>
+            <span class="mfa-code-generator" id="mfa-challenge-pin">831 290</span>
+          </div>
+          <label for="login-mfa" id="label-mfa">Enter 6-Digit MFA Verification Code</label>
+          <input type="text" id="login-mfa" class="styled-input text-center font-monospace letter-space-2" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="btn-login-submit">Proceed Verification</button>
+      </form>
+
+      <!-- Testing Credentials help box -->
+      <div class="credential-help-card">
+        <h5 id="label-hackathon-creds">💡 Hackathon Demo Login Credentials:</h5>
+        <div class="cred-table">
+          <div class="cred-row"><span class="cred-role" id="cred-role-volunteer">Volunteer:</span> <span class="cred-val">vol2026</span> / <span class="cred-val">steward</span></div>
+          <div class="cred-row"><span class="cred-role" id="cred-role-organizer">Organizer:</span> <span class="cred-val">opsdir2026</span> / <span class="cred-val">worldcup</span></div>
+          <div class="cred-row"><span class="cred-role" id="cred-role-admin">Admin:</span> <span class="cred-val">admin2026</span> / <span class="cred-val">admin</span></div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+
+
+  <!-- Notification Toast Popover -->
+  <div id="toast-popover" class="glass-card toast-card text-center" style="display: none;">
+    <span id="toast-msg">Default Notification Message</span>
+  </div>
+
+  <script src="app.js?v=2"></script>
+</body>
+</html>

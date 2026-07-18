@@ -1,0 +1,67 @@
+=== FIFA WORLD CUP 2026 — METLIFE STADIUM VOLUNTEER STANDARD OPERATING PROCEDURES (SOP) ===
+Document: Official Volunteer & Staff Operations Manual
+Venue: MetLife Stadium, East Rutherford, New Jersey, USA
+Last Updated: July 2026
+
+=== SECTION 1: EMERGENCY MEDICAL SOP ===
+In case of medical emergencies (injury, medical collapse, fainting, heat stroke, or hazard):
+1. Stay calm. Secure the immediate area and prevent crowd crush around the patient.
+2. Report precise section number, row, and seat coordinates to the Organizer Dispatch Console on radio channel 1 immediately.
+3. Do NOT move the patient unless there is immediate danger (fire, structural collapse).
+4. Guide incoming EMT/medical personnel to the patient location using the nearest aisle.
+5. First Aid Centers are located near Section 109 (Level 1) and Section 215 (Level 2). Both are staffed with licensed paramedics.
+6. AED (Automated External Defibrillator) units are mounted at every gate entrance and every other section concourse pillar.
+7. If a fan requests medication (aspirin, inhaler, EpiPen), direct them to the nearest First Aid Center. Volunteers are NOT authorized to administer medication.
+
+=== SECTION 2: FIRE & EVACUATION SOP ===
+In case of fire, heavy smoke, or structural emergency:
+1. Activate the nearest fire alarm pull station (red boxes located at every stairwell entrance).
+2. Signal immediate evacuation to the nearest open gate (Gate A, B, or D). Do NOT direct fans to Gate C if congested (check congestion status on your radio).
+3. Avoid elevators during evacuation. Direct all fans to staircases or ramps.
+4. Assembly Points: Lot E (north side), Lot J (east side), Lot L (south side). Count heads at assembly and report to your zone captain.
+5. Fans with disabilities: Prioritize evacuation via Gate A (step-free exit) or the access elevators near Section 112 (only if confirmed safe by fire marshal).
+6. Do NOT re-enter the stadium until the "all clear" signal is given by the Emergency Operations Center (EOC).
+
+=== SECTION 3: ACCESSIBILITY & STEP-FREE NAVIGATION ===
+The main accessible entry is Gate A (North Concourse), which offers:
+- Zero-step entries with automatic sliding doors
+- Low-slope ramps (1:12 gradient, ADA compliant)
+- Access elevators to Concourse Level 1 and Level 2
+Step-free wheelchair pathing is highlighted in GREEN on the venue map.
+Accessibility shuttle/golf carts operate constantly between Lot E, Lot G, and Gate A during match days.
+Access elevators near Section 112 are operational and staffed by a volunteer at all times.
+Assist visually impaired guests by offering verbal directions and guiding them to Gate A or the nearest operational elevator.
+Wheelchair seating areas: Sections 103, 111, 124, 134 (Level 1) and Sections 203, 215, 228 (Level 2).
+Companion seats are provided adjacent to all wheelchair positions.
+Service animals are welcome at all areas of the stadium.
+
+=== SECTION 4: CROWD MANAGEMENT SOP ===
+1. Monitor crowd density using the congestion color system: GREEN (clear), YELLOW (moderate), RED (heavy — immediate action required).
+2. If a section reaches RED congestion status, close the section to new entrants and redirect fans to adjacent sections.
+3. Gate C frequently reaches RED status. When Gate C queue exceeds 20 minutes, activate the diversion protocol: redirect fans to Gate A (2 min wait) or Gate D (3 min wait) via PA announcement and digital signage.
+4. Prevent standing in aisles, stairways, and concourse chokepoints. Politely ask fans to move to their assigned seats.
+5. During halftime, expect 40% of fans to move to concourses. Position extra volunteers at Sections 115-120 (main food court area) to manage queues.
+
+=== SECTION 5: SUSPICIOUS ACTIVITY & SECURITY SOP ===
+1. If you observe suspicious behavior (unattended bags, aggressive individuals, unauthorized filming, attempts to breach restricted areas):
+   - Do NOT confront the individual directly.
+   - Maintain visual contact from a safe distance (minimum 10 meters).
+   - Report immediately on radio channel 2 with: location, description of person/item, nature of concern.
+   - Security Response Team (SRT) will be dispatched within 2 minutes.
+2. Unattended bags: Do NOT touch or move. Establish a 15-meter perimeter and notify SRT on channel 2.
+3. Ejection protocol: Only Security personnel can eject fans. Volunteers assist by guiding ejected fans to the nearest exit and ensuring they leave the premises.
+
+=== SECTION 6: WEATHER EMERGENCY SOP ===
+1. Lightning Protocol: If lightning is detected within 8 miles, the PA system will announce a weather hold. Fans must remain in covered concourse areas. Volunteers clear all outdoor seating areas.
+2. Extreme Heat Protocol (temp > 95°F / 35°C): Activate water misting stations (Sections 105, 118, 130). Distribute free water cups. Direct fans showing heat exhaustion symptoms to First Aid.
+3. Rain Protocol: Distribute free ponchos at Gate A and Gate D. Ensure drainage grates on concourses are clear of debris.
+
+=== SECTION 7: VOLUNTEER SHIFT INFORMATION ===
+Shift Schedule:
+- Morning Shift: 4 hours before kickoff to kickoff (setup, gate management, fan guidance).
+- Match Shift: Kickoff to final whistle (crowd management, emergency response, concourse patrol).
+- Evening Shift: Final whistle to 3 hours after (exit management, cleanup, lost & found collection).
+Check-in Location: Volunteer Center, Lot P (northwest corner of stadium complex).
+Uniform: Official FIFA Volunteer polo (provided), comfortable closed-toe shoes, lanyard with photo ID badge.
+Meals: Free meal voucher for stadium food courts (one per shift). Water bottles provided at check-in.
+Radio Protocol: Channel 1 = Medical/Emergency. Channel 2 = Security. Channel 3 = General Operations. Channel 4 = VIP/Hospitality.
