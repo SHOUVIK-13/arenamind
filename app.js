@@ -11,6 +11,7 @@ class ArenaMindApp {
     this.hasPredefinedKey = false;
     this.geminiApiKey = '';
     this.stadiumsData = null;
+    this.apiUrl = 'https://arenamind-z69l.onrender.com';
     // Clear any previously saved session keys to prevent persistence on refresh
     sessionStorage.removeItem('vgpt_gemini_key');
     
@@ -289,7 +290,7 @@ class ArenaMindApp {
 
   async loadStadiumsData() {
     try {
-      const response = await fetch('http://localhost:5001/api/stadiums');
+      const response = await fetch(`${this.apiUrl}/api/stadiums`);
       if (response.ok) {
         const data = await response.json();
         this.stadiumsData = data.stadiums;
@@ -1421,7 +1422,7 @@ class ArenaMindApp {
 
     // Always route through the Python backend with Gemini LLM
     try {
-      const response = await fetch('http://localhost:5001/api/chat', {
+      const response = await fetch(`${this.apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -1646,7 +1647,7 @@ class ArenaMindApp {
     let sop = 'Dispatch janitorial team to location. Put safety cones.';
 
     try {
-      const response = await fetch('http://localhost:5001/api/incident_sop', {
+      const response = await fetch(`${this.apiUrl}/api/incident_sop`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ description: text })
@@ -1739,7 +1740,7 @@ class ArenaMindApp {
     resBox.innerHTML = '<p class="placeholder-text">Searching SOP index chunks...</p>';
 
     try {
-      const response = await fetch('http://localhost:5001/api/chat', {
+      const response = await fetch(`${this.apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -2028,7 +2029,7 @@ class ArenaMindApp {
 
   async checkBackendConfig() {
     try {
-      const response = await fetch('http://localhost:5001/api/config');
+      const response = await fetch(`${this.apiUrl}/api/config`);
       if (response.ok) {
         const data = await response.json();
         this.hasPredefinedKey = data.has_predefined_key;
@@ -2047,7 +2048,7 @@ class ArenaMindApp {
 
     try {
       this.showToast(`Uploading document '${file.name}' to Python RAG...`, 'info');
-      const response = await fetch('http://localhost:5001/api/upload', {
+      const response = await fetch(`${this.apiUrl}/api/upload`, {
         method: 'POST',
         body: formData
       });
@@ -2097,7 +2098,7 @@ class ArenaMindApp {
     if (!filesList) return;
 
     try {
-      const response = await fetch('http://localhost:5001/api/documents');
+      const response = await fetch(`${this.apiUrl}/api/documents`);
       if (!response.ok) throw new Error('Failed to fetch from backend');
       const docs = await response.json();
 
@@ -2150,7 +2151,7 @@ class ArenaMindApp {
 
     try {
       const activeStadium = this.currentStadium || 'metlife';
-      const response = await fetch(`http://localhost:5001/api/scores?stadium=${activeStadium}`);
+      const response = await fetch(`${this.apiUrl}/api/scores?stadium=${activeStadium}`);
       if (!response.ok) throw new Error('API Offline');
       const data = await response.json();
 
