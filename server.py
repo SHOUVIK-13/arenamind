@@ -598,8 +598,20 @@ def api_chat():
         print(f"[DEBUG /api/chat] Gemini responded: '{response_text}'", flush=True)
         ai_platform = "gemini"
     except RuntimeError as e:
-        print(f"[DEBUG /api/chat] Gemini API call failed: {e}", flush=True)
-        return jsonify({'error': str(e)}), 502
+        # Fallback to gemini-1.5-flash if gemini-2.5-flash is not available (e.g. 404 deprecated for new users)
+        if model == "gemini-2.5-flash":
+            print(f"[DEBUG /api/chat] gemini-2.5-flash failed/unavailable. Falling back to gemini-1.5-flash...", flush=True)
+            try:
+                response_text = generate_gemini_content(api_key, full_context, query, model="gemini-1.5-flash", query_english=query_english_normalized)
+                response_text = "gemini: " + response_text
+                print(f"[DEBUG /api/chat] Gemini 1.5 fallback responded: '{response_text}'", flush=True)
+                ai_platform = "gemini"
+            except RuntimeError as err_inner:
+                print(f"[DEBUG /api/chat] Gemini 1.5 fallback failed: {err_inner}", flush=True)
+                return jsonify({'error': str(err_inner)}), 502
+        else:
+            print(f"[DEBUG /api/chat] Gemini API call failed: {e}", flush=True)
+            return jsonify({'error': str(e)}), 502
 
     return jsonify({
         'query': query,
