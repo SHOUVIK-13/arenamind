@@ -557,11 +557,8 @@ def api_chat():
         print("[WARNING /api/chat] GEMINI_API_KEY is not set. Falling back to Local RAG.", flush=True)
         return jsonify({'error': 'Gemini API key is not configured. Please set the GEMINI_API_KEY environment variable.'}), 503
     
-    # If the key starts with AQ. (PromptWars default), use 2.5-flash, otherwise use 1.5-flash (standard released model)
-    model = "gemini-2.5-flash" if api_key.startswith("AQ.") else "gemini-1.5-flash"
-    
     # Debug logging
-    print(f"[DEBUG /api/chat] query='{query[:50]}' | stadium='{stadium}' | using model {model}", flush=True)
+    print(f"[DEBUG /api/chat] query='{query[:50]}' | stadium='{stadium}'", flush=True)
         
     if not query:
         return jsonify({'error': 'Empty query'}), 400
@@ -591,27 +588,29 @@ def api_chat():
     # Always use Gemini with full unified context using normalized query
     full_context = get_full_unified_context(query_english_normalized, stadium=stadium)
     print(f"[DEBUG /api/chat] Calling Gemini with full context ({len(full_context)} chars) from source '{source}'", flush=True)
-    try:
-        response_text = generate_gemini_content(api_key, full_context, query, model=model, query_english=query_english_normalized)
-        # Prepend "gemini: " to make sure "gemini" is explicitly written/returned in the response text
-        response_text = "gemini: " + response_text
-        print(f"[DEBUG /api/chat] Gemini responded: '{response_text}'", flush=True)
-        ai_platform = "gemini"
-    except RuntimeError as e:
-        # Fallback to gemini-1.5-flash if gemini-2.5-flash is not available (e.g. 404 deprecated for new users)
-        if model == "gemini-2.5-flash":
-            print(f"[DEBUG /api/chat] gemini-2.5-flash failed/unavailable. Falling back to gemini-1.5-flash...", flush=True)
-            try:
-                response_text = generate_gemini_content(api_key, full_context, query, model="gemini-1.5-flash", query_english=query_english_normalized)
-                response_text = "gemini: " + response_text
-                print(f"[DEBUG /api/chat] Gemini 1.5 fallback responded: '{response_text}'", flush=True)
-                ai_platform = "gemini"
-            except RuntimeError as err_inner:
-                print(f"[DEBUG /api/chat] Gemini 1.5 fallback failed: {err_inner}", flush=True)
-                return jsonify({'error': str(err_inner)}), 502
-        else:
-            print(f"[DEBUG /api/chat] Gemini API call failed: {e}", flush=True)
-            return jsonify({'error': str(e)}), 502
+
+    # Try models in order of priority (starting with 2.5-flash-lite as requested)
+    models_to_try = ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-1.5-flash"]
+    response_text = None
+    last_error = None
+    ai_platform = "gemini"
+
+    for m in models_to_try:
+        print(f"[DEBUG /api/chat] Attempting Gemini API call with model '{m}'...", flush=True)
+        try:
+            response_text = generate_gemini_content(api_key, full_context, query, model=m, query_english=query_english_normalized)
+            # Prepend "gemini: " to make sure "gemini" is explicitly written/returned in the response text
+            response_text = "gemini: " + response_text
+            print(f"[DEBUG /api/chat] Success with model '{m}': '{response_text[:100]}...'", flush=True)
+            break
+        except RuntimeError as e:
+            print(f"[DEBUG /api/chat] Model '{m}' failed: {e}", flush=True)
+            last_error = e
+            continue
+
+    if response_text is None:
+        print(f"[DEBUG /api/chat] All Gemini models failed. Last error: {last_error}", flush=True)
+        return jsonify({'error': f"Gemini API call failed: {str(last_error)}"}), 502
 
     return jsonify({
         'query': query,

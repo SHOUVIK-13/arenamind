@@ -1974,3 +1974,70 @@ summary:hover {
   transform: scale(0.96);
 }
 
+/* ================= Mobile & Tablet Layout Compatibility ================= */
+@media (max-width: 1024px) {
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+  .carbon-output-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-main {
+    padding: 1.25rem 1rem;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .app-header {
+    top: 0; /* Align directly under the ticker */
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-text-content h2 {
+    font-size: 2rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  .hero-actions .btn {
+    width: 100%;
+  }
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+  .mode-navigation {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .mode-tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+  }
+  .map-container {
+    height: 360px;
+  }
+  #stadium-svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+  .chat-container {
+    height: 400px;
+  }
+  /* Ensure dialogs scale correctly on extremely narrow screens */
+  .login-dialog[open] {
+    width: 95% !important;
+    margin: 1rem auto;
+    padding: 1.25rem !important;
+  }
+}
+
