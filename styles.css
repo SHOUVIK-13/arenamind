@@ -417,13 +417,15 @@ body {
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   box-shadow: var(--shadow-main);
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
   display: flex;
   flex-direction: column;
 }
 
 .glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 12px 30px rgba(0, 242, 254, 0.05), var(--shadow-main);
 }
 
 .card-header {
@@ -479,8 +481,8 @@ body {
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(12px) scale(0.99); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 /* ------------------- LANDING PAGE ------------------- */
@@ -1965,5 +1967,10 @@ summary:hover {
 .developer-link:hover {
   color: var(--accent-blue);
   border-bottom-color: var(--accent-blue);
+}
+
+/* Premium Interaction Feedback */
+.btn:active, .mode-tab:active, .styled-select:active {
+  transform: scale(0.96);
 }
 
