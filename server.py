@@ -557,8 +557,8 @@ def api_chat():
         print("[WARNING /api/chat] GEMINI_API_KEY is not set. Falling back to Local RAG.", flush=True)
         return jsonify({'error': 'Gemini API key is not configured. Please set the GEMINI_API_KEY environment variable.'}), 503
     
-    # If the key starts with AQ. (PromptWars default), use 2.5-flash, otherwise use 1.5-flash (standard released model)
-    model = "gemini-2.5-flash" if api_key.startswith("AQ.") else "gemini-1.5-flash"
+    # Use gemini-3.5-flash (Google's recommended production model)
+    model = "gemini-3.5-flash"
     
     # Debug logging
     print(f"[DEBUG /api/chat] query='{query[:50]}' | stadium='{stadium}' | using model {model}", flush=True)
