@@ -672,7 +672,9 @@ def api_upload():
 @app.route('/api/incident_sop', methods=['POST'])
 def api_incident_sop():
     data = request.json or {}
-    description = data.get('description', '').lower()
+    description = data.get('description', '').strip().lower()
+    if not description:
+        return jsonify({'error': 'Description is required'}), 400
     
     # Python Incident Classifier logic (Module 2)
     category = "facility"
@@ -681,7 +683,7 @@ def api_incident_sop():
     if any(k in description for k in ['fight', 'security', 'theft', 'weapon', 'police', 'suspect', 'crowd control']):
         category = "security"
         severity = "high" if any(k in description for k in ['weapon', 'fight', 'gun']) else "medium"
-    elif any(k in description for k in ['hurt', 'faint', 'cpr', 'injury', 'blood', 'heart', 'doctor', 'emt']):
+    elif any(k in description for k in ['medical', 'hurt', 'faint', 'cpr', 'injury', 'blood', 'heart', 'doctor', 'emt']):
         category = "medical"
         severity = "high"
     elif any(k in description for k in ['crowd', 'gate c', 'congestion', 'bottleneck', 'block', 'stampede']):
