@@ -11,7 +11,9 @@ class ArenaMindApp {
     this.hasPredefinedKey = false;
     this.geminiApiKey = '';
     this.stadiumsData = null;
-    this.apiUrl = 'https://arenamind-z69l.onrender.com';
+    this.apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
+      ? 'http://localhost:5001'
+      : 'https://arenamind-z69l.onrender.com';
     // Clear any previously saved session keys to prevent persistence on refresh
     sessionStorage.removeItem('vgpt_gemini_key');
     
