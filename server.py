@@ -506,7 +506,6 @@ ArenaMind Response:"""
         'Content-Type': 'application/json'
     }
 
-    import time as _time
     max_retries = 3
     for attempt in range(max_retries + 1):
         try:
@@ -524,7 +523,7 @@ ArenaMind Response:"""
             if e.code == 429 and attempt < max_retries:
                 wait = 5 * (attempt + 1)  # 5s, 10s, 15s
                 print(f"[Gemini] Rate limited (429). Retrying in {wait}s (attempt {attempt+1}/{max_retries})...")
-                _time.sleep(wait)
+                time.sleep(wait)
                 continue
             error_body = e.read().decode('utf-8', errors='replace') if e.fp else ''
             if e.code == 429:
