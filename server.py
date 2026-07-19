@@ -1,8 +1,11 @@
 import os
 import re
 import json
+import time
+import functools
 import urllib.request
 import urllib.error
+from collections import defaultdict
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -32,14 +35,26 @@ else:
 
 CORS(app, origins=origins)  # type: ignore[arg-type]
 
-from collections import defaultdict
-import time
 
 # In-memory Rate Limiting database
 RATE_LIMITS = defaultdict(list)
 
+# Cache for knowledge base chunks to avoid disk I/O bottlenecks
+_KB_CHUNKS_CACHE = None
+
+# Common English stopwords to ignore in keyword scoring
+STOPWORDS = {
+    'the', 'and', 'for', 'how', 'what', 'where', 'you', 'your', 'our', 'are', 
+    'with', 'this', 'that', 'its', 'can', 'should', 'would', 'will', 'about', 
+    'from', 'out', 'here', 'there', 'have', 'has', 'had', 'been', 'were', 
+    'was', 'any', 'some', 'one', 'two', 'who', 'whom', 'whose', 'does', 'did', 'do',
+    'to', 'go', 'by', 'of', 'on', 'at', 'is', 'am', 'be', 'in', 'it', 'or', 'as'
+}
+
 def rate_limit(limit=60, period=60):
+    """Decorator that enforces per-IP rate limiting on API endpoints."""
     def decorator(f):
+        @functools.wraps(f)
         def wrapper(*args, **kwargs):
             ip = request.headers.get("X-Forwarded-For", request.remote_addr)
             now = time.time()
@@ -48,7 +63,6 @@ def rate_limit(limit=60, period=60):
                 return jsonify({'error': 'Rate limit exceeded. Please try again later.'}), 429
             RATE_LIMITS[ip].append(now)
             return f(*args, **kwargs)
-        wrapper.__name__ = f.__name__
         return wrapper
     return decorator
 
@@ -65,9 +79,14 @@ def sanitize_input_text(text: str) -> str:
 # Secure Security Headers
 @app.after_request
 def add_security_headers(response):
+    """Inject comprehensive security headers into every HTTP response."""
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'DENY'
     response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    response.headers['Cache-Control'] = 'no-store'
     # Content Security Policy (CSP) configurations
     response.headers['Content-Security-Policy'] = "default-src 'self'; connect-src 'self' http://localhost:5001 http://127.0.0.1:5001 https://generativelanguage.googleapis.com https://api-football-v1.p.rapidapi.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
     return response
@@ -82,7 +101,12 @@ if not os.path.exists(KNOWLEDGE_BASE_DIR):
 def get_knowledge_base_chunks() -> list:
     """
     Reads and compiles all text and JSON document segments from the local knowledge base directory.
+    Caches the results to maximize server efficiency.
     """
+    global _KB_CHUNKS_CACHE
+    if _KB_CHUNKS_CACHE is not None:
+        return _KB_CHUNKS_CACHE
+
     chunks = []
     if not os.path.exists(KNOWLEDGE_BASE_DIR):
         return chunks
@@ -128,6 +152,7 @@ def get_knowledge_base_chunks() -> list:
         except Exception as e:
             print(f"Error reading {filename}: {e}")
             
+    _KB_CHUNKS_CACHE = chunks
     return chunks
 
 # Local RAG Keyword Ranker
@@ -266,14 +291,7 @@ def search_local_rag(query: str, stadium: str = None) -> tuple[str, str]:
     chunks = filtered_chunks
     query_lower = query.lower()
     
-    # Common English stopwords to ignore in keyword scoring
-    STOPWORDS = {
-        'the', 'and', 'for', 'how', 'what', 'where', 'you', 'your', 'our', 'are', 
-        'with', 'this', 'that', 'its', 'can', 'should', 'would', 'will', 'about', 
-        'from', 'out', 'here', 'there', 'have', 'has', 'had', 'been', 'were', 
-        'was', 'any', 'some', 'one', 'two', 'who', 'whom', 'whose', 'does', 'did', 'do',
-        'to', 'go', 'by', 'of', 'on', 'at', 'is', 'am', 'be', 'in', 'it', 'or', 'as'
-    }
+    # Common English stopwords are loaded from global STOPWORDS
     query_tokens = [t.lower() for t in re.findall(r'\w+', query) if len(t) >= 2 and t.lower() not in STOPWORDS]
     if not query_tokens:
         query_tokens = [t.lower() for t in re.findall(r'\w+', query) if len(t) >= 2]
@@ -375,13 +393,8 @@ def get_full_unified_context(query: str, stadium: str = None) -> str:
         
     chunks = filtered_chunks
     query_lower = query.lower()
-    STOPWORDS = {
-        'the', 'and', 'for', 'how', 'what', 'where', 'you', 'your', 'our', 'are', 
-        'with', 'this', 'that', 'its', 'can', 'should', 'would', 'will', 'about', 
-        'from', 'out', 'here', 'there', 'have', 'has', 'had', 'been', 'were', 
-        'was', 'any', 'some', 'one', 'two', 'who', 'whom', 'whose', 'does', 'did', 'do',
-        'to', 'go', 'by', 'of', 'on', 'at', 'is', 'am', 'be', 'in', 'it', 'or', 'as'
-    }
+    
+    # Common English stopwords are loaded from global STOPWORDS
     query_tokens = [t.lower() for t in re.findall(r'\w+', query) if len(t) >= 2 and t.lower() not in STOPWORDS]
     if not query_tokens:
         query_tokens = [t.lower() for t in re.findall(r'\w+', query) if len(t) >= 2]
@@ -598,9 +611,17 @@ def translate_query_to_english(query: str) -> str:
 @app.route('/api/chat', methods=['POST'])
 @rate_limit(limit=60, period=60)
 def api_chat():
+    """
+    RAG-augmented chat endpoint utilizing Gemini API to resolve user questions 
+    on transit, ticketing, accessibility, and general stadium procedures.
+    """
     data = request.json or {}
     query = sanitize_input_text(data.get('query', ''))
     stadium = sanitize_input_text(data.get('stadium', ''))
+    
+    # Input Validation: Max query length of 2000 characters to prevent DoS/overflow
+    if len(query) > 2000 or len(stadium) > 100:
+        return jsonify({'error': 'Input length limits exceeded.'}), 400
     
     # Retrieve key from environment securely
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -662,12 +683,18 @@ def api_chat():
 
 @app.route('/api/config', methods=['GET'])
 def api_config():
+    """
+    Checks if a predefined Gemini API key is configured on the backend environment.
+    """
     return jsonify({
         'has_predefined_key': os.environ.get("GEMINI_API_KEY") is not None
     })
 
 @app.route('/api/stadiums', methods=['GET'])
 def api_stadiums():
+    """
+    Retrieves the complete Wayfinder map topology including accessibility nodes, coordinates, and parking lots.
+    """
     try:
         path = os.path.join(KNOWLEDGE_BASE_DIR, 'wayfinder_map.json')
         if os.path.exists(path):
@@ -680,6 +707,9 @@ def api_stadiums():
 
 @app.route('/api/documents', methods=['GET'])
 def api_documents():
+    """
+    Lists metadata for all registered knowledge base documents including filename, byte size, and chunk counts.
+    """
     chunks = get_knowledge_base_chunks()
     doc_summary = {}
     
@@ -699,12 +729,27 @@ def api_documents():
 @app.route('/api/upload', methods=['POST'])
 @rate_limit(limit=15, period=60)
 def api_upload():
+    """
+    Saves an uploaded FAQ/SOP document, clears the in-memory cache, and makes the content searchable.
+    Enforces a strict 2MB security size limit.
+    """
+    # 1. Content length security check
+    if request.content_length and request.content_length > 2 * 1024 * 1024:
+        return jsonify({'error': 'File size exceeds the 2MB security limit.'}), 400
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in request'}), 400
         
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No filename provided'}), 400
+
+    # 2. File size seek check
+    file.seek(0, os.SEEK_END)
+    size = file.tell()
+    file.seek(0)
+    if size > 2 * 1024 * 1024:
+        return jsonify({'error': 'File size exceeds the 2MB security limit.'}), 400
 
     # Filter/sanitize name
     safe_filename = re.sub(r'[^a-zA-Z0-9_\.-]', '_', file.filename or '')
@@ -714,6 +759,11 @@ def api_upload():
     try:
         dest_path = os.path.join(KNOWLEDGE_BASE_DIR, safe_filename)
         file.save(dest_path)
+        
+        # Clear the memory cache so new chunks are indexed immediately
+        global _KB_CHUNKS_CACHE
+        _KB_CHUNKS_CACHE = None
+        
         return jsonify({
             'success': True,
             'message': f"Document '{safe_filename}' uploaded and indexed in Python RAG pipeline successfully."
@@ -724,10 +774,16 @@ def api_upload():
 @app.route('/api/incident_sop', methods=['POST'])
 @rate_limit(limit=60, period=60)
 def api_incident_sop():
+    """
+    Classifies a reported incident description into categories and returns the mapped SOP procedures.
+    Enforces a query length limit to block buffer overload payloads.
+    """
     data = request.json or {}
     description = sanitize_input_text(data.get('description', '')).lower()
     if not description:
         return jsonify({'error': 'Description is required'}), 400
+    if len(description) > 2000:
+        return jsonify({'error': 'Description exceeds the 2000 character security limit.'}), 400
     
     # Python Incident Classifier logic (Module 2)
     category = "facility"
@@ -774,11 +830,15 @@ def api_incident_sop():
     })
 
 # Simulation state to show a realistic live match progression starting from minute 0 when the server starts
-import time
 START_TIME = time.time()
 
 @app.route('/api/scores', methods=['GET'])
 def get_live_scores():
+    """
+    Retrieves live football scores and event timelines for the active stadium.
+    Connects to API-Football when available, otherwise falls back to a realistic
+    match progression simulation based on server uptime.
+    """
     # Read stadium parameter
     stadium = request.args.get('stadium', 'metlife')
     stadium_map = {

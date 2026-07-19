@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ArenaMind is an AI-powered Smart Venue Operations Platform for FIFA World Cup 2026, providing real-time navigation, crowd management, accessibility wayfinding, and multilingual assistance for fans, volunteers, and organizers.">
   <title>ArenaMind - Smart Venue Operations Platform</title>
   <link rel="stylesheet" href="styles.css?v=2">
   <!-- Google Fonts: Inter and Outfit -->
@@ -12,11 +13,14 @@
 </head>
 <body>
 
+  <!-- Skip Navigation Link for Accessibility -->
+  <a href="#app-viewport" class="sr-only skip-link" id="skip-nav">Skip to main content</a>
+
   <!-- Football Opening Splash Screen -->
-  <div id="splash-screen">
+  <div id="splash-screen" aria-hidden="true">
     <div class="splash-content">
       <div class="splash-football-wrapper">
-        <svg class="splash-football" viewBox="0 0 100 100">
+        <svg class="splash-football" viewBox="0 0 100 100" aria-hidden="true">
           <circle cx="50" cy="50" r="48" fill="#ffffff" stroke="#1e293b" stroke-width="3" />
           <polygon points="50,35 62,45 58,60 42,60 38,45" fill="#1e293b" />
           <line x1="50" y1="35" x2="50" y2="15" stroke="#1e293b" stroke-width="2" />
@@ -44,7 +48,7 @@
   </div>
 
   <!-- Global Header -->
-  <header class="app-header">
+  <header class="app-header" role="banner">
     <div class="header-logo">
       <span class="logo-icon">🏟️</span>
       <div class="logo-text">
@@ -82,12 +86,12 @@
       </div>
 
       <!-- Mode Selector Tabs -->
-      <nav class="mode-navigation" aria-label="Dashboard mode selection">
-        <button class="mode-tab active" data-target="view-landing" id="tab-landing">Home</button>
-        <button class="mode-tab" data-target="view-fan" id="tab-fan">Fan Portal</button>
-        <button class="mode-tab staff-only" data-target="view-volunteer" id="tab-volunteer" style="display: none;">Volunteer</button>
-        <button class="mode-tab staff-only" data-target="view-organizer" id="tab-organizer" style="display: none;">Organizer</button>
-        <button class="mode-tab staff-only" data-target="view-admin" id="tab-admin" style="display: none;">Admin</button>
+      <nav class="mode-navigation" aria-label="Dashboard mode selection" role="tablist">
+        <button class="mode-tab active" data-target="view-landing" id="tab-landing" role="tab" aria-selected="true" aria-controls="view-landing">Home</button>
+        <button class="mode-tab" data-target="view-fan" id="tab-fan" role="tab" aria-selected="false" aria-controls="view-fan">Fan Portal</button>
+        <button class="mode-tab staff-only" data-target="view-volunteer" id="tab-volunteer" style="display: none;" role="tab" aria-selected="false" aria-controls="view-volunteer">Volunteer</button>
+        <button class="mode-tab staff-only" data-target="view-organizer" id="tab-organizer" style="display: none;" role="tab" aria-selected="false" aria-controls="view-organizer">Organizer</button>
+        <button class="mode-tab staff-only" data-target="view-admin" id="tab-admin" style="display: none;" role="tab" aria-selected="false" aria-controls="view-admin">Admin</button>
       </nav>
 
       <!-- Auth Action -->
@@ -103,7 +107,7 @@
   <main class="app-main" id="app-viewport">
 
     <!-- Landing View -->
-    <section id="view-landing" class="viewport-section active">
+    <section id="view-landing" class="viewport-section active" role="tabpanel" aria-labelledby="tab-landing">
       <div class="hero-container">
         <div class="hero-text-content">
           <span class="hero-tagline">FIFA WORLD CUP 2026</span>
@@ -165,7 +169,7 @@
     </section>
 
     <!-- Fan Dashboard -->
-    <section id="view-fan" class="viewport-section">
+    <section id="view-fan" class="viewport-section" role="tabpanel" aria-labelledby="tab-fan">
       <div class="dashboard-grid grid-2-columns">
         
         <!-- Left: AI Chat and FAQs -->
@@ -178,7 +182,7 @@
                 <span class="ai-toggle-label" style="font-size: 0.7rem; color: var(--accent-primary); font-weight: 600;">⚡ Powered by Gemini</span>
               </div>
             </div>
-            <div class="chat-messages" id="fan-chat-messages">
+            <div class="chat-messages" id="fan-chat-messages" role="log" aria-live="polite" aria-label="Chat conversation history">
               <div class="chat-bubble bot-message">
                 Hello! I am ArenaMind. I have direct access to MetLife Stadium's knowledge base. How can I help you today?
               </div>
@@ -188,7 +192,8 @@
               <button onclick="app.sendSuggestedQuery('How do I find step-free wheelchair access?')">Accessibility Path</button>
               <button onclick="app.sendSuggestedQuery('What eco-friendly transport options are available?')">Transit & Eco-Score</button>
             </div>
-            <form class="chat-input-form" id="fan-chat-form">
+            <form class="chat-input-form" id="fan-chat-form" aria-label="Chat with AI assistant">
+              <label for="fan-chat-input" class="sr-only">Ask the AI assistant a question</label>
               <input type="text" id="fan-chat-input" placeholder="Ask about concessions, gate navigation, schedules..." required autocomplete="off">
               <button type="submit" class="btn btn-primary">Send</button>
             </form>
@@ -418,7 +423,7 @@
     </section>
 
     <!-- Volunteer Portal -->
-    <section id="view-volunteer" class="viewport-section">
+    <section id="view-volunteer" class="viewport-section" role="tabpanel" aria-labelledby="tab-volunteer">
       <div class="dashboard-grid grid-2-columns">
         
         <!-- Left: Incident Reporting Form -->
@@ -427,7 +432,7 @@
             <div class="card-header border-bottom">
               <h3 id="heading-report-incident">📢 Report Local Field Incident</h3>
             </div>
-            <form class="styled-form" id="incident-form">
+            <form class="styled-form" id="incident-form" aria-label="Report a field incident">
               <div class="form-group-row">
                 <div class="input-field">
                   <label for="inc-category">Incident Category</label>
@@ -498,7 +503,8 @@
             </div>
             <div class="sop-content">
               <p class="description-text">Instantly retrieve official World Cup 2026 Standard Operating Procedures (SOP) via RAG.</p>
-              <form class="chat-input-form" id="sop-search-form">
+              <form class="chat-input-form" id="sop-search-form" aria-label="Search SOP knowledge base">
+                <label for="sop-search-input" class="sr-only">Search Standard Operating Procedures</label>
                 <input type="text" id="sop-search-input" placeholder="Query: 'Crowd control protocols' or 'Medical alert steps'..." required>
                 <button type="submit" class="btn btn-secondary">Search</button>
               </form>
@@ -513,7 +519,7 @@
     </section>
 
     <!-- Organizer Console -->
-    <section id="view-organizer" class="viewport-section">
+    <section id="view-organizer" class="viewport-section" role="tabpanel" aria-labelledby="tab-organizer">
       <div class="dashboard-grid grid-2-columns">
         
         <!-- Left: Operations Scenario Sim & Broadcast Generator -->
@@ -533,7 +539,8 @@
               <div class="scenario-output" id="scenario-output-box">
                 <p class="placeholder-text">Execute a preset scenario or type custom command below to receive tactical recommendations...</p>
               </div>
-              <form class="chat-input-form" id="scenario-custom-form">
+              <form class="chat-input-form" id="scenario-custom-form" aria-label="Custom scenario analysis">
+                <label for="scenario-custom-input" class="sr-only">Enter a custom scenario to analyze</label>
                 <input type="text" id="scenario-custom-input" placeholder="Custom Scenario: 'Power grid failure in Concourse 2'..." required>
                 <button type="submit" class="btn btn-primary">Analyze</button>
               </form>
@@ -582,7 +589,7 @@
             <div class="metrics-grid">
               <div class="metric-dial">
                 <div class="dial-container">
-                  <svg class="dial-svg" viewBox="0 0 100 100">
+                  <svg class="dial-svg" viewBox="0 0 100 100" role="img" aria-label="Stadium occupancy gauge at 84 percent">
                     <circle class="dial-bg" cx="50" cy="50" r="40" />
                     <circle class="dial-bar bar-green" id="dial-occupancy" stroke-dashoffset="50" cx="50" cy="50" r="40" />
                   </svg>
@@ -592,7 +599,7 @@
               </div>
               <div class="metric-dial">
                 <div class="dial-container">
-                  <svg class="dial-svg" viewBox="0 0 100 100">
+                  <svg class="dial-svg" viewBox="0 0 100 100" role="img" aria-label="Train wait time gauge">
                     <circle class="dial-bg" cx="50" cy="50" r="40" />
                     <circle class="dial-bar bar-cyan" id="dial-transit" stroke-dashoffset="120" cx="50" cy="50" r="40" />
                   </svg>
@@ -602,7 +609,7 @@
               </div>
               <div class="metric-dial">
                 <div class="dial-container">
-                  <svg class="dial-svg" viewBox="0 0 100 100">
+                  <svg class="dial-svg" viewBox="0 0 100 100" role="img" aria-label="Gate congestion level gauge">
                     <circle class="dial-bg" cx="50" cy="50" r="40" />
                     <circle class="dial-bar bar-red animate-pulse" id="dial-congestion" stroke-dashoffset="180" cx="50" cy="50" r="40" />
                   </svg>
@@ -618,7 +625,7 @@
     </section>
 
     <!-- Admin Console -->
-    <section id="view-admin" class="viewport-section">
+    <section id="view-admin" class="viewport-section" role="tabpanel" aria-labelledby="tab-admin">
       <div class="dashboard-grid grid-2-columns">
         
         <!-- Left: KB Management & User Accounts -->
@@ -630,7 +637,7 @@
             </div>
             <div class="kb-body">
               <p class="description-text">Simulate uploading files (SOP PDFs, match rules, maps) to generate text chunks and update the semantic vector database.</p>
-              <div class="file-uploader" id="kb-uploader-box">
+              <div class="file-uploader" id="kb-uploader-box" role="button" tabindex="0" aria-label="Upload knowledge base documents. Drag and drop or click to browse.">
                 <span class="upload-icon">📁</span>
                 <p>Drag &amp; Drop SOP, Maps, or FAQ files here, or click to browse</p>
                 <input type="file" id="kb-file-input" style="display:none;">
@@ -664,6 +671,7 @@
             </div>
             <div class="user-mgr-body">
               <table class="user-table">
+                <caption class="sr-only">Registered user accounts, roles, and access permissions</caption>
                 <thead>
                   <tr>
                     <th>User ID</th>
@@ -700,7 +708,7 @@
   </main>
 
   <!-- Global Footer -->
-  <footer class="app-footer">
+  <footer class="app-footer" role="contentinfo">
     <div class="footer-content">
       <p id="footer-text">ArenaMind Smart Venue Operations Platform | Developed by <a href="https://www.linkedin.com/in/shouvik-mukherjee-9163a3169/" target="_blank" rel="noopener noreferrer" class="developer-link">Shouvik Mukherjee</a></p>
     </div>
@@ -714,7 +722,7 @@
     </div>
     
     <div class="login-form-container">
-      <form id="login-form" class="styled-form">
+      <form id="login-form" class="styled-form" aria-label="Staff authentication form">
         <div class="input-field">
           <label for="login-username" id="label-username">Staff Username</label>
           <input type="text" id="login-username" class="styled-input" placeholder="Enter username..." required autocomplete="username">
@@ -741,7 +749,7 @@
             <span class="mfa-code-generator" id="mfa-challenge-pin">831 290</span>
           </div>
           <label for="login-mfa" id="label-mfa">Enter 6-Digit MFA Verification Code</label>
-          <input type="text" id="login-mfa" class="styled-input text-center font-monospace letter-space-2" maxlength="6" placeholder="000000" autocomplete="one-time-code">
+          <input type="text" id="login-mfa" class="styled-input text-center font-monospace letter-space-2" maxlength="6" placeholder="000000" autocomplete="one-time-code" aria-describedby="mfa-challenge-pin">
         </div>
 
         <button type="submit" class="btn btn-primary btn-full" id="btn-login-submit">Proceed Verification</button>
@@ -762,7 +770,7 @@
 
 
   <!-- Notification Toast Popover -->
-  <div id="toast-popover" class="glass-card toast-card text-center" style="display: none;">
+  <div id="toast-popover" class="glass-card toast-card text-center" style="display: none;" role="alert" aria-live="assertive">
     <span id="toast-msg">Default Notification Message</span>
   </div>
 

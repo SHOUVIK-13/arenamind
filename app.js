@@ -871,13 +871,19 @@ class ArenaMindApp {
     }
 
     document.querySelectorAll('.viewport-section').forEach(sec => sec.classList.remove('active'));
-    document.querySelectorAll('.mode-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.mode-tab').forEach(tab => {
+      tab.classList.remove('active');
+      tab.setAttribute('aria-selected', 'false');
+    });
 
     const activeSec = document.getElementById(viewId);
     if (activeSec) activeSec.classList.add('active');
 
     const activeTab = Array.from(document.querySelectorAll('.mode-tab')).find(tab => tab.getAttribute('data-target') === viewId);
-    if (activeTab) activeTab.classList.add('active');
+    if (activeTab) {
+      activeTab.classList.add('active');
+      activeTab.setAttribute('aria-selected', 'true');
+    }
 
     this.currentView = viewId;
     this.logEvent('info', `Navigation: View shifted to ${viewId}.`);

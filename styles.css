@@ -173,6 +173,41 @@ body {
   border: 0;
 }
 
+/* Skip Navigation Link — visible on keyboard focus */
+.skip-link:focus {
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100000;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  background: var(--accent-primary);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,255,136,0.4);
+}
+
+/* Global :focus-visible Outlines for Keyboard Navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0,255,136,0.2);
+}
+
 /* Announcement Ticker System */
 .announcement-ticker {
   background: linear-gradient(90deg, #111625, #001208, #111625);
