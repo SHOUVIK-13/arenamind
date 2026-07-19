@@ -1256,8 +1256,19 @@ class ArenaMindApp {
     e.preventDefault();
     if (this.isLockedOut) return;
 
-    const userInp = this.sanitizeInput(document.getElementById('login-username').value.trim());
-    const passInp = document.getElementById('login-password').value;
+    const rawUser = document.getElementById('login-username').value.trim();
+    const rawPass = document.getElementById('login-password').value;
+
+    // Proactive SQL/NoSQL Injection prevention filter
+    const dangerousPatterns = /('|--|\bunion\b|\bselect\b|\bor\s+['"]?1['"]?\s*=\s*['"]?1['"]?)/gi;
+    if (dangerousPatterns.test(rawUser) || dangerousPatterns.test(rawPass)) {
+      this.logEvent('error', `ALERT: Blocked potential authentication injection vector from username: "${rawUser}".`);
+      this.showToast('Security Alert: Malicious input patterns detected and blocked.', 'error');
+      return;
+    }
+
+    const userInp = this.sanitizeInput(rawUser);
+    const passInp = rawPass;
     const roleInp = document.getElementById('login-role').value;
     const mfaInp = document.getElementById('login-mfa').value.trim();
     const mfaChal = document.getElementById('mfa-challenge-pin').innerText.replace(/\s/g, '');
@@ -1312,9 +1323,10 @@ class ArenaMindApp {
   // Threat mitigation lockout simulator
   triggerLockout() {
     this.isLockedOut = true;
-    this.lockoutTimeRemaining = 10;
-    this.logEvent('error', 'ALERT: Firewall lock active. IP rate-limited due to brute-force detection.');
-    this.showToast('Firewall Lock: Too many failed login attempts.', 'error');
+    this.lockoutBlocks = (this.lockoutBlocks || 0) + 1;
+    this.lockoutTimeRemaining = 15 * this.lockoutBlocks; // Progressive cooldown: 15s, 30s, 45s...
+    this.logEvent('error', `ALERT: Firewall lock active. IP rate-limited due to brute-force detection. Cooldown: ${this.lockoutTimeRemaining}s`);
+    this.showToast(`Firewall Lock: Locked out for ${this.lockoutTimeRemaining}s.`, 'error');
     this.closeLoginModal();
 
     const interval = setInterval(() => {

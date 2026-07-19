@@ -32,6 +32,33 @@ else:
 
 CORS(app, origins=origins)  # type: ignore[arg-type]
 
+from collections import defaultdict
+import time
+
+# In-memory Rate Limiting database
+RATE_LIMITS = defaultdict(list)
+
+def rate_limit(limit=60, period=60):
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+            now = time.time()
+            RATE_LIMITS[ip] = [t for t in RATE_LIMITS[ip] if now - t < period]
+            if len(RATE_LIMITS[ip]) >= limit:
+                return jsonify({'error': 'Rate limit exceeded. Please try again later.'}), 429
+            RATE_LIMITS[ip].append(now)
+            return f(*args, **kwargs)
+        wrapper.__name__ = f.__name__
+        return wrapper
+    return decorator
+
+def sanitize_input_text(text):
+    if not text:
+        return ""
+    # Strip HTML tags to prevent XSS script injection
+    clean = re.sub(r'<[^>]*>', '', text)
+    return clean.strip()
+
 # Secure Security Headers
 @app.after_request
 def add_security_headers(response):
@@ -546,10 +573,11 @@ def translate_query_to_english(query):
     return " ".join(translated_words)
 
 @app.route('/api/chat', methods=['POST'])
+@rate_limit(limit=60, period=60)
 def api_chat():
     data = request.json or {}
-    query = data.get('query', '').strip()
-    stadium = data.get('stadium', '').strip()
+    query = sanitize_input_text(data.get('query', ''))
+    stadium = sanitize_input_text(data.get('stadium', ''))
     
     # Retrieve key from environment securely
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -646,6 +674,7 @@ def api_documents():
     return jsonify(list(doc_summary.values()))
 
 @app.route('/api/upload', methods=['POST'])
+@rate_limit(limit=15, period=60)
 def api_upload():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in request'}), 400
@@ -670,9 +699,10 @@ def api_upload():
         return jsonify({'error': f"Failed to save file: {str(e)}"}), 500
 
 @app.route('/api/incident_sop', methods=['POST'])
+@rate_limit(limit=60, period=60)
 def api_incident_sop():
     data = request.json or {}
-    description = data.get('description', '').strip().lower()
+    description = sanitize_input_text(data.get('description', '')).lower()
     if not description:
         return jsonify({'error': 'Description is required'}), 400
     
