@@ -11,6 +11,7 @@
   
   --accent-cyan: #f97316;
   --accent-blue: #ea580c;
+  --accent-primary: var(--accent-cyan);
   --accent-green: #fdba74;
   --accent-red: #ef4444;
   --accent-yellow: #f59e0b;
@@ -52,6 +53,7 @@
   
   --accent-cyan: #ea580c;
   --accent-blue: #c2410c;
+  --accent-primary: var(--accent-cyan);
   --accent-green: #f97316;
   --accent-red: #dc2626;
   --accent-yellow: #d97706;
