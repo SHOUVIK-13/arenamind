@@ -52,7 +52,10 @@ def rate_limit(limit=60, period=60):
         return wrapper
     return decorator
 
-def sanitize_input_text(text):
+def sanitize_input_text(text: str) -> str:
+    """
+    Sanitizes input strings to prevent Cross-Site Scripting (XSS) by removing HTML tags.
+    """
     if not text:
         return ""
     # Strip HTML tags to prevent XSS script injection
@@ -76,7 +79,10 @@ if not os.path.exists(KNOWLEDGE_BASE_DIR):
     os.makedirs(KNOWLEDGE_BASE_DIR)
 
 # Helper to read all knowledge documents
-def get_knowledge_base_chunks():
+def get_knowledge_base_chunks() -> list:
+    """
+    Reads and compiles all text and JSON document segments from the local knowledge base directory.
+    """
     chunks = []
     if not os.path.exists(KNOWLEDGE_BASE_DIR):
         return chunks
@@ -125,7 +131,11 @@ def get_knowledge_base_chunks():
     return chunks
 
 # Local RAG Keyword Ranker
-def rewrite_chunk_content(content, stadium):
+def rewrite_chunk_content(content: str, stadium: str) -> str:
+    """
+    Dynamically rewrites document chunk content based on the active stadium context
+    (translating addresses, gates, transit nodes, parking lots, and restrooms).
+    """
     if not stadium:
         return content
     stadium_lower = stadium.lower()
@@ -217,7 +227,11 @@ def rewrite_chunk_content(content, stadium):
         content = content.replace("Lot P", "Pacific Boulevard Parkade")
     return content
 
-def search_local_rag(query, stadium=None):
+def search_local_rag(query: str, stadium: str = None) -> tuple[str, str]:
+    """
+    Searches the RAG system for the best relevant segment matching the user query.
+    Returns a tuple of (content, source_filename).
+    """
     chunks = get_knowledge_base_chunks()
     if not chunks:
         return "No documents found in knowledge base directory.", "No context available."
@@ -327,7 +341,10 @@ def search_local_rag(query, stadium=None):
     return "MetLife Stadium operations directives and security procedures.", "System Default"
 
 # Helper to build a complete unified context of all chunks sorted by relevance score
-def get_full_unified_context(query, stadium=None):
+def get_full_unified_context(query: str, stadium: str = None) -> str:
+    """
+    Builds a complete, score-ranked context string from all matching RAG segments.
+    """
     chunks = get_knowledge_base_chunks()
     if not chunks:
         return "No documents found in knowledge base directory."
@@ -431,7 +448,10 @@ def get_full_unified_context(query, stadium=None):
     return result[:3000]
 
 # Calling external Google Gemini API with RAG context
-def generate_gemini_content(api_key, context, query, model="gemini-2.5-flash", query_english=None):
+def generate_gemini_content(api_key: str, context: str, query: str, model: str = "gemini-3.5-flash", query_english: str = None) -> str:
+    """
+    Executes a structured prompt against the Google Gemini API, integrating the RAG context.
+    """
     ref_part = f" (English reference: {query_english})" if query_english and query_english != query.lower() else ""
     prompt = f"""You are ArenaMind, the AI-powered smart stadium operations and navigation assistant for the FIFA World Cup 2026.
 You are helping fans, volunteers, and staff with real-time support.
@@ -503,7 +523,10 @@ ArenaMind Response:"""
     raise RuntimeError("Failed to generate content: retry limit exceeded")
 
 
-def translate_query_to_english(query):
+def translate_query_to_english(query: str) -> str:
+    """
+    Translates basic Spanish and Arabic keywords to English to enable unified local RAG searches.
+    """
     q = query.lower()
     
     # Spanish mappings

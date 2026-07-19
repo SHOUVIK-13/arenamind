@@ -6,6 +6,33 @@ Built with a high-fidelity glassmorphic dark mode interface, ArenaMind functions
 
 ---
 
+## 📋 Hackathon Submission Alignment & Project Overview
+
+### 1. Chosen Challenge Vertical
+* **Vertical**: **Stadium Operations, Accessibility, and Smart Navigation**
+* **Focus**: Improving multi-lingual spectator navigation, crowd flow bottlenecks, sustainability tracking, and real-time operations intelligence for venue staff, volunteers, and organizers.
+
+### 2. Approach and Logic
+* **Multi-Persona Interface**: Tailored user experiences split into four dashboard gateways:
+  * **Fan Portal**: Navigation assistance, local RAG chatbot, interactive SVG layout navigation, and a transit sustainability badge offset calculator.
+  * **Volunteer Portal**: Active tasks log, quick emergency dispatch reporter, and instant SOP lookup.
+  * **Organizer Portal**: Real-time what-if scenario simulators, dynamic weather/congestion risk briefs, and automated multi-lingual PA announcers.
+  * **Admin Terminal**: Security threat log console, RAG document index manager, and local mock database controls.
+* **Intelligent Local RAG**: A lightweight, offline-first keyword ranking vector indexing system. Injects relevant context blocks from physical blueprints and translates input queries on the fly from Spanish/Arabic to ensure high retrieval accuracy.
+* **Multi-Venue Dynamic Adapter**: Re-maps operations rules dynamically for multiple host stadiums (MetLife Stadium, Estadio Azteca, BC Place) based on the user's venue selection.
+
+### 3. How the Solution Works
+* **Backend**: Flask REST API server (`server.py`) serving as the gateway. It implements dynamic RAG keyword rankers, routes request payloads to Google Gemini 3.5 Flash for query synthesis, manages simulated match timelines, and serves security headers.
+* **Frontend**: Vanilla HTML5/CSS3 and client-side JavaScript (`app.js`) running a responsive glassmorphic UI. Employs secure memory sessions for role-based authentication.
+* **Testing**: Python `unittest` module testing all 7 endpoints with mocked third-party connections.
+
+### 4. Assumptions Made
+* **Offline Fallbacks**: Real-time API-Football connectivity falls back to realistic mock matchday simulations if developer keys are missing.
+* **Metadata Availability**: Assumed that local operational text directives are pre-indexed and structured to map correctly to specific venue layouts.
+* **Authenticator Sim**: MFA codes are generated and checked programmatically on the frontend to simulate a production-grade TOTP flow without external dependencies.
+
+---
+
 ## 🌟 Core Features & AI Modules
 
 1. **AI Matchday Assistant (RAG Chatbot)**: Evaluates fan queries (e.g. queue waits, food vendors, transportation, accessibility gates) and retrieves accurate answers from a local Vector-style index, rendering highlight paths on the interactive stadium map.
